@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ restaurant.name }} - FoodSmartz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #f5f7fa;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding: 40px 20px;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .restaurant-detail, .recommended-restaurants {
+            background: var(--card-background);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .restaurant-detail:hover, .recommended-restaurants:hover {
+            transform: translateY(-5px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .slider {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 300px;
+            margin-right: 20px;
+            background: var(--card-background);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: scale(1.05);
+        }
+
+        .slider-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .slider-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .rating {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .address {
+            font-style: italic;
+            color: #666;
+        }
+
+        .combined-dish {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="restaurant-detail">
+            <a class="back-link" href="{% url 'home' %}">← Back to Restaurant List</a>
+            <h1>{{ restaurant.name }}</h1>
+            <p><strong>Location:</strong> {{ restaurant.location }}</p>
+            <p><span class="rating">{{ restaurant.rate }} ★</span> ({{ restaurant.votes }} votes)</p>
+            <p class="address">{{ restaurant.address }}</p>
+        </div>
+
+        <div class="recommended-restaurants">
+            <h2>Recommended Restaurants</h2>
+            <div class="slider">
+                <div class="slider-track">
+                    {% for recommended in recommendations %}
+                        <div class="slide">
+                            <h3>{{ recommended.name }}</h3>
+                            <p><strong>Location:</strong> {{ recommended.location }}</p>
+                            <p><span class="rating">{{ recommended.rate }} ★</span> ({{ recommended.votes }} votes)</p>
+                            <p class="address">{{ recommended.address }}</p>
+                            <p class="combined-dish"><strong>Signature Dish:</strong> {{ recommended.combined }}</p>
+                        </div>
+                    {% empty %}
+                        <div class="slide">No recommended restaurants available at this time.</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="slider-button" onclick="nextSlide()">Next Recommendation →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlides() {
+            const track = document.querySelector('.slider-track');
+            const slideWidth = slides[0].offsetWidth + 20; // Include margin
+            track.style.transform = 'translateX(' + (-currentIndex * slideWidth) + 'px)';
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlides();
+        }
+
+        showSlides(); // Initial display
+    </script>
+</body>
+</html>

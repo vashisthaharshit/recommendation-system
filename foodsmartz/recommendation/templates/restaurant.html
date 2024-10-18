@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant List</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #ecf0f1;
+            --card-background: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--secondary-color);
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container input[type="range"] {
+            width: 200px;
+            margin: 0 1rem;
+        }
+
+        .search-container output {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .search-container button {
+            padding: 0.5rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: 600;
+        }
+
+        .search-container button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .restaurant-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .restaurant-card {
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .restaurant-card p {
+            margin: 0.5rem 0;
+        }
+
+        .restaurant-card strong {
+            color: var(--secondary-color);
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--accent-color);
+            font-style: italic;
+            font-size: 1.2em;
+            margin-top: 2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 0;
+            background: var(--secondary-color);
+            color: white;
+            position: relative;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: border 0.3s;
+        }
+
+        .search-container input[type="text"]:focus {
+            border-color: #35424a;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #35424a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #45607c;
+        }
+
+        output {
+            font-weight: bold;
+            color: #35424a;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FoodSmartz</h1>
+    </header>
+    
+    <main>
+
+        <div class="restaurant-container">
+            {% for restaurant in restaurants %}
+                <div class="restaurant-card">
+                    <h2>{{ restaurant.name }}</h2>
+                    <p><strong>Location:</strong> {{ restaurant.location }}</p>
+                    <p><strong>Rating:</strong> {{ restaurant.rate }} (Votes: {{ restaurant.votes }})</p>
+                    <p><strong>Address:</strong> {{ restaurant.address }}</p>
+                </div>
+            {% endfor %}
+            <div class="restaurant-card">
+                <h2>{{ restaurant_info.name }}</h2>
+                <p><strong>Location:</strong> {{ restaurant_info.location }}</p>
+                <p><strong>Rating:</strong> {{ restaurant_info.rate }} (Votes: {{ restaurant_info.votes }})</p>
+                <p><strong>Address:</strong> {{ restaurant_info.address }}</p>
+            </div>
+        </div>
+
+        {% if not restaurants %}
+            <p class="no-results">No recommendations found for "{{ request.POST.name }}". Please try another restaurant name.</p>
+        {% endif %}
+    </main>
+    <footer>
+        &copy; 2024 Restaurant List
+    </footer>
+</body>
+</html>
